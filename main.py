@@ -14,6 +14,8 @@ class Game:
         pygame.display.set_caption(title)
 
         self.CLOCK = MyClock(60)
+
+        self.PLAYER = pygame.sprite.GroupSingle( Player(100, 20, width, height) )
     
     def quit(self):
         pygame.quit()
@@ -26,6 +28,9 @@ class Game:
                     self.quit()
             
             self.SCREEN.fill(self.SCREEN_BG)
+
+            self.PLAYER.update()
+            self.PLAYER.draw(self.SCREEN)
 
             pygame.display.update()
             self.CLOCK.tick()
