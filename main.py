@@ -16,6 +16,10 @@ class Game:
         self.CLOCK = MyClock(60)
 
         self.PLAYER = pygame.sprite.GroupSingle( Player(100, 20, width, height) )
+
+        self.BLOCKS = pygame.sprite.Group( Block(80, 50, width, height) )
+
+        self.SCORE = Score()
     
     def quit(self):
         pygame.quit()
@@ -31,6 +35,11 @@ class Game:
 
             self.PLAYER.update()
             self.PLAYER.draw(self.SCREEN)
+
+            self.BLOCKS.update()
+            self.BLOCKS.draw(self.SCREEN)
+
+            self.SCORE.draw(self.SCREEN)
 
             pygame.display.update()
             self.CLOCK.tick()
