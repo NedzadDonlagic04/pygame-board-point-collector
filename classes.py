@@ -75,6 +75,9 @@ class Score:
         font = pygame.font.Font('./fonts/Pixeltype.ttf', 40)
         self.text = font.render('Score: ' + str(self.score), False, 'black')
         self.textRect = self.text.get_rect( topleft = (20, 20))
+
+        if self.score < 0:
+            self.GAME_OVER = True
     
     def addScore(self, score):
         self.score += score

@@ -19,7 +19,7 @@ class Game:
 
         self.BLOCKS = pygame.sprite.Group( Block(80, 50, width, height) )
 
-        self.SCORE = Score()
+        self.SCORE = Score(50)
     
     def quit(self):
         pygame.quit()
@@ -41,6 +41,14 @@ class Game:
 
             self.SCORE.update(self.PLAYER.sprite, self.BLOCKS)
             self.SCORE.draw(self.SCREEN)
+
+            if self.SCORE.GAME_OVER:
+                self.quit()
+
+            for block in self.BLOCKS:
+                if block.rect.bottom == self.HEIGHT / 3:
+                    self.BLOCKS.add(Block(80, 50, self.WIDTH, self.HEIGHT))
+                    break
 
             pygame.display.update()
             self.CLOCK.tick()
