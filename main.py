@@ -47,7 +47,7 @@ class Game:
 
             for block in self.BLOCKS:
                 if block.rect.bottom == self.HEIGHT / 3:
-                    self.BLOCKS.add(Block(80, 50, self.WIDTH, self.HEIGHT))
+                    self.BLOCKS.add(Block(80, 50, self.WIDTH, self.HEIGHT, self.SCORE.score))
                     break
 
             pygame.display.update()

@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.right = self.SCREEN_WIDTH
 
 class Block(pygame.sprite.Sprite):
-    def __init__(self, rectWidth, rectHeight, screenWidth, screenHeight, color=[211, 211, 211]):
+    def __init__(self, rectWidth, rectHeight, screenWidth, screenHeight, currentScore=0, color=[211, 211, 211]):
         super().__init__()
 
         x = random.randrange(rectWidth, screenWidth - rectWidth)
@@ -43,7 +43,10 @@ class Block(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, color, (0, 0, rectWidth, rectHeight), border_radius=4)
         self.rect = self.image.get_rect( bottomleft = (x, 0) )
 
-        self.score = random.randrange(-5, 60, 5)
+        if currentScore > 500:
+            self.score = random.randrange(-5, 60, 5)
+        else:
+            self.score = random.randrange(5, 50, 5)
 
         if self.score < 5:
             self.score = '/'
@@ -99,7 +102,7 @@ class Score:
             self.score //= 2
         elif score != '/':
             self.score -= score
-            
+
         self.makeScore()
 
     def update(self, player, blocks):
