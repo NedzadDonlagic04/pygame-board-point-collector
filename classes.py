@@ -43,7 +43,12 @@ class Block(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, color, (0, 0, rectWidth, rectHeight), border_radius=4)
         self.rect = self.image.get_rect( bottomleft = (x, 0) )
 
-        self.score = random.randrange(5, 50, 5)
+        self.score = random.randrange(-5, 60, 5)
+
+        if self.score < 5:
+            self.score = '/'
+        elif self.score > 50:
+            self.score = '*'
 
         font = pygame.font.Font('./fonts/Pixeltype.ttf', 40)
         text = font.render(str(self.score), False, 'black')
@@ -80,11 +85,21 @@ class Score:
             self.GAME_OVER = True
     
     def addScore(self, score):
-        self.score += score
+        if score == '/':
+            self.score //= 2
+        elif score == '*':
+            self.score *= 2
+        else:
+            self.score += score
+
         self.makeScore()
 
     def reduceScore(self, score):
-        self.score -= score
+        if score == '*':
+            self.score //= 2
+        elif score != '/':
+            self.score -= score
+            
         self.makeScore()
 
     def update(self, player, blocks):
