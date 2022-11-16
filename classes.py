@@ -37,39 +37,59 @@ class Block(pygame.sprite.Sprite):
     def __init__(self, rectWidth, rectHeight, screenWidth, screenHeight, color=[211, 211, 211]):
         super().__init__()
 
-        x = score = random.randrange(rectWidth, screenWidth - rectWidth)
+        x = random.randrange(rectWidth, screenWidth - rectWidth)
 
         self.image = pygame.Surface((rectWidth, rectHeight), pygame.SRCALPHA)
         pygame.draw.rect(self.image, color, (0, 0, rectWidth, rectHeight), border_radius=4)
         self.rect = self.image.get_rect( bottomleft = (x, 0) )
 
-        score = random.randrange(5, 50, 5)
+        self.score = random.randrange(5, 50, 5)
 
         font = pygame.font.Font('./fonts/Pixeltype.ttf', 40)
-        text = font.render(str(score), False, 'black')
+        text = font.render(str(self.score), False, 'black')
         textRect = text.get_rect( center = (rectWidth / 2, rectHeight / 2))
 
         self.image.blit(text, textRect)
 
         self.SCREEN_HEIGHT = screenHeight
         self.SPEED = 5
+    
+    def getScore(self):
+        return self.score
 
-    def update(self):
+    def update(self, score):
         self.rect.bottom += self.SPEED
 
-        if self.rect.top > self.SCREEN_HEIGHT:
-            self.rect.bottom = 0
+        if self.rect.bottom > self.SCREEN_HEIGHT:
+            score.reduceScore(self.getScore()) 
+            self.kill()
 
 class Score:
     def __init__(self, default=50):
-        self.makeScore(default)
+        self.score = default
+        self.makeScore()
 
         self.GAME_OVER = False
     
-    def makeScore(self, score):
+    def makeScore(self):
         font = pygame.font.Font('./fonts/Pixeltype.ttf', 40)
-        self.text = font.render('Score: ' + str(score), False, 'black')
+        self.text = font.render('Score: ' + str(self.score), False, 'black')
         self.textRect = self.text.get_rect( topleft = (20, 20))
+    
+    def addScore(self, score):
+        self.score += score
+        self.makeScore()
+
+    def reduceScore(self, score):
+        self.score -= score
+        self.makeScore()
+
+    def update(self, player, blocks):
+        blocksHit= pygame.sprite.spritecollide(player, blocks, False)
+
+        for block in blocksHit:
+            self.addScore(block.getScore())
+            block.kill()
 
     def draw(self, screen):
         screen.blit(self.text, self.textRect)

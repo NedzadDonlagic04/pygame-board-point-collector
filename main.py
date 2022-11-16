@@ -36,9 +36,10 @@ class Game:
             self.PLAYER.update()
             self.PLAYER.draw(self.SCREEN)
 
-            self.BLOCKS.update()
+            self.BLOCKS.update(self.SCORE)
             self.BLOCKS.draw(self.SCREEN)
 
+            self.SCORE.update(self.PLAYER.sprite, self.BLOCKS)
             self.SCORE.draw(self.SCREEN)
 
             pygame.display.update()
